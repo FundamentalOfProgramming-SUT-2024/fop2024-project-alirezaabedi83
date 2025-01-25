@@ -120,7 +120,8 @@ int sign_up() {
     char username[MAX_USERNAME_LEN], password[MAX_PASSWORD_LEN], email[MAX_EMAIL_LEN];
     char choice;
 
-    initscr();
+    // initscr();
+    clear();
     cbreak();
     noecho();
     curs_set(1);
@@ -240,7 +241,8 @@ int login() {
     char username[MAX_USERNAME_LEN], password[MAX_PASSWORD_LEN], email[MAX_EMAIL_LEN];
     int choice;
 
-    initscr();
+    // initscr();
+    clear();
     cbreak();
     noecho();
     curs_set(1);
@@ -443,6 +445,7 @@ int first_menu() {
         refresh();
     }
 
-    endwin();
+    // endwin();
+    clear();
     return 1;
 }

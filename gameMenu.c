@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include "gameMenu.h"
+#include "firstMenu.h"
 
 int game_menu() {
     int choice;
@@ -15,7 +16,7 @@ int game_menu() {
     };
     int n_choices = sizeof(choices) / sizeof(char *);
 
-    initscr();
+    // initscr();
     clear();
     noecho();
     cbreak();
@@ -68,7 +69,7 @@ int game_menu() {
                     getch();
                     clear();
                 } else if (strcmp(choices[highlight], "Back to Main Menu") == 0) {
-                    endwin();
+                    first_menu();
                     return 0;
                 }
                 break;
@@ -79,6 +80,7 @@ int game_menu() {
         refresh();
     }
 
-    endwin();
+    // endwin();
+    clear();
     return 1;
 }
