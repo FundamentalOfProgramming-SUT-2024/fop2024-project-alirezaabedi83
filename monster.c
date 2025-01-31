@@ -76,10 +76,6 @@ Monster* create_monster(char symbol,int health,int attack,int speed,int defence,
 int set_starting_pos(Monster* monster , Room* room){
     monster->position->x=(rand() % (room->width - 2)) + room->position.x +1;
     monster->position->y=(rand() % (room->length - 2)) + room->position.y + 1;
-
-    mvprintw(monster->position->y, monster->position->x, monster->string);
-
-    return 1;
 }
 
 int move_monster(Level* level){
@@ -89,7 +85,6 @@ int move_monster(Level* level){
             continue;
         
         }
-            mvprintw(level->monsters[x]->position->y, level->monsters[x]->position->x,".");
 
         if (level->monsters[x]->pathfinding==1) {
             random_move(level->monsters[x]->position);
@@ -97,7 +92,6 @@ int move_monster(Level* level){
         else {
             seek_move(level->monsters[x]->position , level->user->position);
         }
-        mvprintw(level->monsters[x]->position->y, level->monsters[x]->position->x, level->monsters[x]->string);
   
     }
 
@@ -173,11 +167,16 @@ Monster* get_monster(Position* position , Monster** monsters){
 
 }
 int kill_monster(Monster* monster){
-    mvprintw(monster->position->y, monster->position->x, ".");
     monster->is_alive=0;
     return 1;
 }
 
+void draw_monster(Monster* monster){
+    if (monster->is_alive) {
+    mvprintw(monster->position->y, monster->position->x, "%s", monster->string);
+    }
+
+}
 /*
 Spider
     symbol:S

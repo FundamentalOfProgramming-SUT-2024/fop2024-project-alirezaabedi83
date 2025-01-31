@@ -1,28 +1,32 @@
 #include "game.h"
-#include <ncurses.h>
+
+void menu_loop(){
+    int choice;
+    char*choices[]={"start game","end game"};
+
+    Game game;
+    game.curent_level=0;
+
+    while (1) {
+        choice=main_menu(2, choices);
+        switch (choice) {
+            case START_GAME:
+            game_loop(&game);
+            clear();
+            break;
+            case QUIT_GAME:
+            return;
+            break;
+        
+        }
+    
+    }
+}
 
 int main(){
-    
-    int choice;
-    // int MAX_WIDTH=188;
-    // int MAX_HEIGHT=56;
-    
-    Level*level;
-    Position* new_pos;
-    screen_setup();
-    level=level_setup(1);
-
-    print_game_info(level);
-
-    while ((choice=getch())!='q') {
-        print_game_info(level);
-        new_pos=handle_input(choice,level->user);
-        check_next(new_pos, level);
-        move_monster(level);
-        move(level->user->position->y, level->user->position->x);
-        
-    }
-    
+      
+    screen_setup(); 
+    menu_loop();   
     endwin();
     return 0;
 }

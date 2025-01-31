@@ -21,28 +21,28 @@ int checker(int y, int x){
 
 int add_neighbor(int** front ,int ctr, int*** came_from , int y, int x){
     //up
-    if (y>0 && came_from[y-1][x][0] < 0 && checker(y-1,x)) {
+    if (y>3 && came_from[y-1][x][0] < 0 && checker(y-1,x)) {
         add_position_yx(front, ctr, y-1,  x);
         ctr++;
         came_from[y-1][x][0]=y;
         came_from[y-1][x][1]=x;
     }
     //down
-    if (y<MAX_HEIGHT-1 && came_from[y+1][x][0] < 0 && checker(y+1,x)) {
+    if ((y<MAX_HEIGHT-3) && came_from[y+1][x][0] < 0 && checker(y+1,x)) {
         add_position_yx(front, ctr, y+1,  x);
         ctr++;
         came_from[y+1][x][0]=y;
         came_from[y+1][x][1]=x;
     }
     //right
-    if ((x<MAX_WIDTH-1) && came_from[y][x+1][0] < 0 && checker(y,x+1)) {
+    if ((x<MAX_WIDTH-3) && came_from[y][x+1][0] < 0 && checker(y,x+1)) {
         add_position_yx(front, ctr, y,  x+1);
         ctr++;
         came_from[y][x+1][0]=y;
         came_from[y][x+1][1]=x;
     }
     //left
-    if (x>0 && came_from[y][x-1][0] < 0 && checker(y,x-1)) {
+    if (x>3 && came_from[y][x-1][0] < 0 && checker(y,x-1)) {
         add_position_yx(front, ctr, y,  x-1);
         ctr++;
         came_from[y][x-1][0]=y;
@@ -79,8 +79,8 @@ void path_find(Position* origin , Position* destination){
     
     }
 
-    came_from[origin->y][origin->x][0]=-2;
-    came_from[origin->y][origin->x][1]=-2;
+    came_from[origin->y][origin->x][0]=-9;
+    came_from[origin->y][origin->x][1]=-9;
 
     add_position_yx(front,ctr,origin->y,origin->x);
     ctr++;
@@ -89,11 +89,13 @@ void path_find(Position* origin , Position* destination){
         y=front[idx][0];
         x=front[idx][1];
 
+        idx++;
+
         if (y==destination->y && x==destination->x) {
             break;
         
         }
-        idx++;
+    
 
         ctr=add_neighbor(front,ctr,came_from ,y ,x );
     
@@ -106,7 +108,7 @@ void path_find(Position* origin , Position* destination){
         ycopy=y;
         y=came_from[ycopy][x][0];
         x=came_from[ycopy][x][1];
-        mvprintw(y, y,"+");
+        mvprintw(y, x,"#");
     }
 
 }

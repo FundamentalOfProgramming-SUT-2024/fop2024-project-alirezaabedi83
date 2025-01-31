@@ -1,16 +1,22 @@
 #include "game.h"
 #include <ncurses.h>
-#include <stdio.h>
 Player*player_setup(){
     Player *new_player;
     new_player=(Player*)malloc(sizeof(Player));
     new_player->position=(Position*)malloc(sizeof(Position));
 
+    new_player->items=(Item**)malloc(sizeof(Item*));
+
     new_player->health=100;
     new_player->score=0;
     new_player->attack=1;
     new_player->exprience=0;
+    new_player->item_count=0;
     new_player->max_health=100;
+
+    new_player->items[new_player->item_count]=create_sword(2,4);
+    new_player->item_count++;
+
     
     
     return new_player;
@@ -19,13 +25,6 @@ Player*player_setup(){
 int place_player(Room** rooms , Player* user){
     user->position->x = rooms[0]->position.x + 1;
     user->position->y = rooms[0]->position.y + 1;
-
-    mvprintw(user->position->y,user->position->x,"&");
-    move(user->position->y,user->position->x);
-
-    return 1;
-
-
 }
 
 
@@ -85,7 +84,6 @@ int check_next(Position* new_pos,Level* level){
         case 'T':
             combat(user, get_monster(new_pos, level->monsters),1);
         default:
-        move(user->position->y,user->position->x);
         break;  
     
     }
@@ -94,13 +92,13 @@ int check_next(Position* new_pos,Level* level){
 
 
 int move_player(Position* new_pos,Player*user , char** level){
-    char buffer[8];
-    sprintf(buffer,"%c", level[user->position->y][user->position->x]);
 
-    mvprintw(user->position->y, user->position->x, "%s", buffer);
     user->position->x=new_pos->x;
     user->position->y=new_pos->y;
-    mvprintw(user->position->y, user->position->x, "&");
-    move(user->position->y, user->position->x);
-    return 1;
+}
+
+void draw_player(Player*player){
+    mvprintw(player->position->y, player->position->x, "&");
+    move(player->position->y, player->position->x);
+
 }
