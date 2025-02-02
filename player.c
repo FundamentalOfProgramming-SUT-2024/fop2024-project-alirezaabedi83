@@ -6,16 +6,19 @@ Player*player_setup(){
     Player *new_player;
     new_player=(Player*)malloc(sizeof(Player));
     new_player->position=(Position*)malloc(sizeof(Position));
-    new_player->items=(Item**)malloc(sizeof(Item*));
+    new_player->weapon_items=(Item**)malloc(sizeof(Item*));
+    new_player->potion_items=(Item**)malloc(sizeof(Item*));
 
     new_player->attack=5;
     new_player->exprience=0;
-    new_player->item_count=0;
+    new_player->weapon_count=0;
+    new_player->potion_count=0;
+
     new_player->max_health=100;
     // scoring=0;
 
-    new_player->items[new_player->item_count]=create_mace(5,4);
-    new_player->item_count++;
+    new_player->weapon_items[new_player->weapon_count]=create_mace(5,4);
+    new_player->weapon_count++;
 
     
     
@@ -104,20 +107,41 @@ int check_next(Position* new_pos,Level* level){
         }
         
         case 'Z':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->potion_items[user->potion_count]=create_attack_potion(20); 
+                user->potion_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);         
+            }
         break;
 
         case 'X':
+            mvprintw(0, 0,"do you want it?(y/n)");
+                if (getch()=='y') {
+                    user->potion_items[user->potion_count]=create_health_potion(20); 
+                    user->potion_count++;
+                    level->tiles[new_pos->y][new_pos->x]='.';
+                    move_player(new_pos,user,level->tiles);         
+                }
         break;
 
         case 'P':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->potion_items[user->potion_count]=create_speed_potion(20); 
+                user->potion_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);         
+            }
             
         break;
 
         case 'A':
             mvprintw(0, 0,"do you want it?(y/n)");
             if (getch()=='y') {
-                user->items[user->item_count]=create_arrow(5,20); 
-                user->item_count++;
+                user->weapon_items[user->weapon_count]=create_arrow(5,20); 
+                user->weapon_count++;
                 level->tiles[new_pos->y][new_pos->x]='.';
                 move_player(new_pos,user,level->tiles);         
             }
@@ -125,8 +149,8 @@ int check_next(Position* new_pos,Level* level){
         case 'W':
             mvprintw(0, 0,"do you want it?(y/n)");
             if (getch()=='y') {
-                user->items[user->item_count]=create_wand(15,8);
-                user->item_count++;
+                user->weapon_items[user->weapon_count]=create_wand(15,8);
+                user->weapon_count++;
                 level->tiles[new_pos->y][new_pos->x]='.';
                 move_player(new_pos,user,level->tiles);
             }
@@ -134,8 +158,8 @@ int check_next(Position* new_pos,Level* level){
         case 'R':
             mvprintw(0, 0,"do you want it?(y/n)");
             if (getch()=='y') {
-                user->items[user->item_count]=create_sword(10,20);
-                user->item_count++;
+                user->weapon_items[user->weapon_count]=create_sword(10,20);
+                user->weapon_count++;
                 level->tiles[new_pos->y][new_pos->x]='.';
                 move_player(new_pos,user,level->tiles);
             }
@@ -143,8 +167,8 @@ int check_next(Position* new_pos,Level* level){
         case 'E':
             mvprintw(0, 0,"do you want it?(y/n)");
             if (getch()=='y') {
-                user->items[user->item_count]=create_dagger(12,10);
-                user->item_count++;
+                user->weapon_items[user->weapon_count]=create_dagger(12,10);
+                user->weapon_count++;
                 level->tiles[new_pos->y][new_pos->x]='.';
                 move_player(new_pos,user,level->tiles);
             }

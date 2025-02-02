@@ -1,7 +1,4 @@
 #include "game.h"
-#include <ncurses.h>
-#include <stdio.h>
-#include <time.h>
 
 int add_monster(Level *level){
     int x;
@@ -40,20 +37,20 @@ Monster* select_monster(int level){
 
     switch (monster) {
         case 1://deamon
-            return create_monster('D',5,1,1,1,2);
+            return create_monster('D',5,3,1,1,2);
         break;
         case 2://fire
-            return create_monster('F',10,2,1,1,2);
+            return create_monster('F',10,5,1,1,2);
 
         break;
         case 3://giant
-            return create_monster('G',15,3,1,1,2);
+            return create_monster('G',15,8,1,1,1);
         break;
         case 4://snake
-            return create_monster('S',20,1,1,1,2);
+            return create_monster('S',20,7,1,1,2);
         break;
         case 5://undeed
-            return create_monster('U',30,2,1,1,2);
+            return create_monster('U',30,9,1,1,2);
 
         break;
     
@@ -67,8 +64,6 @@ Monster* create_monster(char symbol,int health,int attack,int speed,int defence,
     new_mon->symbol=symbol;
     new_mon->health=health;
     new_mon->attack=attack;
-    new_mon->speed=speed;
-    new_mon->defence=defence;
     new_mon->pathfinding=pathfinding;
     new_mon->is_alive=1;
 

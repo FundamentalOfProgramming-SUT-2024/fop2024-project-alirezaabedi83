@@ -15,3 +15,8 @@ guest 83 62
 guest 7 5
 guest 5 3
 alireee 75 54
+guest 15 13
+guest 4 0
+alireee 0 0
+guest 0 0
+la 67 42

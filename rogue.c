@@ -1,6 +1,4 @@
 #include "game.h"
-#include <ncurses.h>
-#include <string.h>
 
 void render(Game* game){
     clear();
@@ -25,28 +23,28 @@ int game_loop(Game* game){
         
         }
         if (choice=='i') {
-            print_inventory(level->user);
+            print_weopon(level->user);
             mvprintw(0, 0, "wich one do you want to use?");
             char str[10];
             getstr(str);
             int apply_time=0;
             if (strcmp(str, "sword")==0) {
-                delete_item(level->user, "sword");
+                delete_weopon(level->user, "sword");
                 level->user->attack=10;
                 apply_time=0;
             }
             else if (strcmp(str, "dagger")==0) {
-                delete_item(level->user, "dagger");
+                delete_weopon(level->user, "dagger");
                 level->user->attack=12;
                 apply_time=1;
             }
             else if (strcmp(str, "arrow")==0) {
-                delete_item(level->user, "arrow");
+                delete_weopon(level->user, "arrow");
                 level->user->attack=6;
                 apply_time=1;
             }
             else if (strcmp(str, "wand")==0) {
-                delete_item(level->user, "wand");
+                delete_weopon(level->user, "wand");
                 level->user->attack=15;
                 apply_time=1;
             }
@@ -61,6 +59,48 @@ int game_loop(Game* game){
             
 
         }
+
+        if (choice=='o') {
+            print_potion(level->user);
+            mvprintw(0, 0, "wich one do you want to use?");
+            int attorhealth=0;
+            char str[10];
+            getstr(str);
+            if (strcmp(str, "health")==0) {
+                delete_potion(level->user, "health");
+                attorhealth=1;
+                health+=5;
+            }
+            else if (strcmp(str, "attack")==0) {
+                delete_potion(level->user, "attack");
+                level->user->attack*=2;
+                attorhealth=0;
+            }
+            else if (strcmp(str, "speed")==0) {
+                delete_potion(level->user, "speed");
+                level->user->attack=6;
+            }
+            else {
+                
+            }
+            if (attorhealth==0) {
+                pthread_t reset_thread;
+                pthread_create(&reset_thread, NULL, reset_attack, (void*)level->user);
+                pthread_detach(reset_thread);
+            }
+            else {
+                pthread_t reset_thread;
+                pthread_create(&reset_thread, NULL, reset_health, (void*)level->user);
+                pthread_detach(reset_thread);
+            
+            }
+                
+            
+            
+
+        }
+
+
         else{
             new_pos=handle_input(choice,level->user);
             check_next(new_pos, level);

@@ -99,7 +99,7 @@ int draw_room(Room* room , int num_of_room) {
     
     }
     //potion room
-    if (num_of_room==6) {
+    if (num_of_room==5) {
         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'X');
         if (rand()%2==1) {
             mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'X');

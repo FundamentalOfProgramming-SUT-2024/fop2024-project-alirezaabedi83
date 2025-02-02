@@ -65,22 +65,24 @@ typedef struct Monster{
     char symbol;
     int health;
     int attack;
-    int speed;
-    int defence;
     int pathfinding;
     Position *position;
     int is_alive;
     
 } Monster;
 
-// typedef enum{SWORD_TYPE,SPEAR_TYPE} WeaponType;
 
 typedef struct Weapon{
-    // WeaponType type;
     int attack;
     int health;
 
 }Weapon;
+
+typedef struct Potion{
+    int health;
+
+}Potion;
+
 typedef enum {WEAPON_TYPE, POTION_TYPE}ItemType;
 typedef struct Item{
     ItemType type;
@@ -88,7 +90,7 @@ typedef struct Item{
 
     union {
         Weapon * weapon;
-        // Potion* potion;
+        Potion* potion;
     } item;
 
     char string[256];
@@ -116,8 +118,11 @@ typedef struct Player{
     Room*room;
     int max_health;
     int exprience;
-    Item** items;
-    int item_count;
+    Item** weapon_items;
+    int weapon_count;
+    Item** potion_items;
+    int potion_count;
+
 } Player;
 
 typedef struct {
@@ -164,9 +169,15 @@ Item* create_arrow(int attack, int health);
 Item* create_wand(int attack, int health);
 Item* create_dagger(int attack, int health);
 Item* create_sword(int attack, int health);
-void print_inventory(Player*player);
+void print_weopon(Player*player);
 void* reset_attack(void* arg) ;
-void delete_item(Player *player, char *item_name);
+void* reset_health(void* arg);
+void delete_weopon(Player *player, char *item_name);
+void delete_potion(Player *player, char *item_name) ;
+Item* create_health_potion( int health);
+Item* create_attack_potion( int health);
+Item* create_speed_potion(int health);
+void print_potion(Player*player);
 
 
 //menu functions

@@ -14,7 +14,7 @@ int combat(Player* player , Monster* monster , int command){
         
         }
         else {
-            mvprintw(0, 0,"you killed the %c and get wxprienced and got 2 score.",monster->symbol );
+            mvprintw(0, 0,"you killed the %c and get exprienced and got 2 score.",monster->symbol );
             score+=2;
             getch();
             kill_monster(monster);

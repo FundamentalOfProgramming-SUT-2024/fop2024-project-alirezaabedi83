@@ -21,14 +21,21 @@ int print_game_info(Level* level){
 
 }
 
-void print_inventory(Player*player){
-        mvprintw(54, 0, "    Inventory: ");
-        for (int i=0; i<player->item_count; i++) {
-            printw("%s ", player->items[i]->string);
+void print_weopon(Player*player){
+        mvprintw(54, 0, "    Weopons: ");
+        for (int i=0; i<player->weapon_count; i++) {
+            printw("%s ", player->weapon_items[i]->string);
         
         }
 
+}
 
+void print_potion(Player*player){
+        mvprintw(54, 0, "    Potions: ");
+        for (int i=0; i<player->potion_count; i++) {
+            printw("%s ", player->potion_items[i]->string);
+        
+        }
 
 }
 

@@ -85,20 +85,88 @@ void* reset_attack(void* arg) {
     return NULL;
 }
 
-void delete_item(Player *player, char *item_name) {
-    for (int i = 0; i < player->item_count; i++) {
-        if (strcmp(player->items[i]->string, item_name) == 0) {
-            free(player->items[i]);
+void* reset_health(void* arg) {
+    Player* user = (Player*) arg;
 
-            for (int j = i; j < player->item_count - 1; j++) {
-                player->items[j] = player->items[j + 1];
+    sleep(10);
+
+    health-=2;
+
+    return NULL;
+}
+
+void delete_weopon(Player *player, char *item_name) {
+    for (int i = 0; i < player->weapon_count; i++) {
+        if (strcmp(player->weapon_items[i]->string, item_name) == 0) {
+            free(player->weapon_items[i]);
+
+            for (int j = i; j < player->weapon_count - 1; j++) {
+                player->weapon_items[j] = player->weapon_items[j + 1];
             }
 
-            player->item_count--;
+            player->weapon_count--;
 
         }
     }
 
+}
+
+void delete_potion(Player *player, char *item_name) {
+    for (int i = 0; i < player->potion_count; i++) {
+        if (strcmp(player->potion_items[i]->string, item_name) == 0) {
+            free(player->potion_items[i]);
+
+            for (int j = i; j < player->potion_count - 1; j++) {
+                player->potion_items[j] = player->potion_items[j + 1];
+            }
+
+            player->potion_count--;
+
+        }
+    }
+
+}
+
+Item* create_health_potion(int health){
+    Item* item=(Item*)malloc(sizeof(Item));
+    item->type=POTION_TYPE;
+
+    strcpy(item->string, "health");
+
+    Potion* potion=malloc(sizeof(Potion));
+
+    potion->health=health;
+
+    item->item.potion=potion;
+    return item;
+}
+
+Item* create_attack_potion(int health){
+    Item* item=(Item*)malloc(sizeof(Item));
+    item->type=POTION_TYPE;
+
+    strcpy(item->string, "attack");
+
+    Potion* potion=malloc(sizeof(Potion));
+
+    potion->health=health;
+
+    item->item.potion=potion;
+    return item;
+}
+
+Item* create_speed_potion( int health){
+    Item* item=(Item*)malloc(sizeof(Item));
+    item->type=POTION_TYPE;
+
+    strcpy(item->string, "speed");
+
+    Potion* potion=malloc(sizeof(Potion));
+
+    potion->health=health;
+
+    item->item.potion=potion;
+    return item;
 }
 /*
 A -> arrow
