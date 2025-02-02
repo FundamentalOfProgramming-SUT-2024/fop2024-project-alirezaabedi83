@@ -1,9 +1,12 @@
 #include "game.h"
 #include <ncurses.h>
+#include <stdlib.h>
+
 Player*player_setup(){
     Player *new_player;
     new_player=(Player*)malloc(sizeof(Player));
     new_player->position=(Position*)malloc(sizeof(Position));
+    new_player->username=(char*)malloc(sizeof(char)*50);
 
     new_player->items=(Item**)malloc(sizeof(Item*));
 
@@ -13,6 +16,7 @@ Player*player_setup(){
     new_player->exprience=0;
     new_player->item_count=0;
     new_player->max_health=100;
+    // scoring=0;
 
     new_player->items[new_player->item_count]=create_sword(2,4);
     new_player->item_count++;
@@ -79,10 +83,58 @@ int check_next(Position* new_pos,Level* level){
         case '+':
         move_player(new_pos,user,level->tiles);
         break;
-        case 'S':
+        case 'D':
         case 'G':
-        case 'T':
+        case 'S':
+        case 'F':
+
             combat(user, get_monster(new_pos, level->monsters),1);
+            break;
+        case '^':
+            user->health--; 
+            move_player(new_pos,user,level->tiles);
+            break;
+
+        case '$':{
+            int random_score=rand()%5 + 1;
+            scoring+=random_score ; 
+            level->tiles[new_pos->y][new_pos->x]='.';
+            move_player(new_pos,user,level->tiles);
+            mvprintw(0, 0, "you get %d gold.",random_score);
+            getch();
+            break;    
+        }
+        case '>':{
+            current_floor++;
+            Game game;
+            game.curent_level=0;
+            clear();
+            game_loop(&game);
+        break;
+        }
+        case '*':
+        {
+            clear();
+            char *you_win[] = {
+            " Y   Y  OOO  U   U      W   W  I  N   N ",
+            " Y   Y O   O U   U      W   W  I  NN  N ",
+            "  Y Y  O   O U   U      W W W  I  N N N ",
+            "   Y   O   O U   U      W W W  I  N  NN ",
+            "   Y    OOO   UUU        W W   I  N   N "
+            };
+            for (int i = 0; i < 5; ++i) {
+                mvprintw(23+i, 70, "%s\n", you_win[i]);
+            }
+            mvprintw(30, 70, "Y O U G O T %d S C O R E .",scoring);
+            getch();
+            save_scoreboard(user_name, scoring);
+            endwin();
+            exit(0);
+            
+
+
+            break;
+        }
         default:
         break;  
     

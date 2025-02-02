@@ -8,7 +8,15 @@
 #include <string.h>
 #include <regex.h>
 #include <menu.h>
+#include <locale.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
+extern int scoring;
+extern char user_name[50];
+extern int current_floor;
+
+extern Mix_Music *current_music;
 
 #define MAX_USERNAME_LEN 50
 #define MAX_PASSWORD_LEN 50
@@ -99,7 +107,7 @@ typedef struct Door{
 } Door;
 
 typedef struct Player{
-    char username[20];
+    char* username;
     Position *position;
     int score;
     int health;
@@ -110,10 +118,17 @@ typedef struct Player{
     Item** items;
     int item_count;
 } Player;
+
+typedef struct {
+    char username[50];
+    int score;
+} ScoreBoard;
+
+
 void screen_setup();
 int rooms_overlap(Room room1, Room room2) ;
 Room *generate_random_room(int max_height, int max_width , int grid , int door_count);
-int draw_room(Room *room);
+int draw_room(Room *room , int num_of_room);
 Room** room_setup();
 Player*player_setup();
 Position* handle_input(int choice,Player*user);
@@ -159,5 +174,15 @@ int sign_up();
 int check_email_for_username(char username[], char email[]);
 int login();
 int first_menu();
+
+void save_scoreboard(char username[], int score) ;
+int compare_scores(const void *a, const void *b) ;
+void display_scoreboard(const char* logged_in_user);
+void settings_menu() ;
+void play_music(const char *file);
+void stop_music();
+
+void path_find(Position* origin , Position* destination);
+
 
 #endif 

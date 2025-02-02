@@ -1,5 +1,4 @@
 #include "game.h"
-#include "utils.h"
 
 void add_position_yx(int**front,int ctr,int y,int x){
     front[ctr][0]=y;

@@ -1,4 +1,6 @@
 #include "game.h"
+#include <ncurses.h>
+#include <stdlib.h>
 
 Room *generate_random_room(int max_height, int max_width , int grid, int door_count) {
     Room *room=(Room*)malloc(sizeof(Room));
@@ -62,7 +64,7 @@ Room *generate_random_room(int max_height, int max_width , int grid, int door_co
     return room;
 }
 
-int draw_room(Room* room) {
+int draw_room(Room* room , int num_of_room) {
     for (int i = 0; i < room->length; i++) {
         for (int j = 0; j < room->width; j++) {
             if (i == 0 || i == room->length - 1) {
@@ -73,6 +75,28 @@ int draw_room(Room* room) {
                 mvaddch(room->position.y + i, room->position.x + j, '.');
             }
         }
+    }
+
+    mvaddch(room->position.y + rand()%(room->length-1)+1,room->position.x + rand()%(room->width-1)+1, 'o');
+
+    if (num_of_room==3) {
+        if (current_floor==4) {
+            mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '*');
+        }
+        else{
+            mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '>');
+        }
+    
+    }
+
+    if ((rand()%2)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '^');
+    
+    }
+
+    if ((rand()%2)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '$');
+    
     }
     // int door_count= sizeof(room->door)/sizeof(Position*);
     for (int i=0; i<4; i++) {

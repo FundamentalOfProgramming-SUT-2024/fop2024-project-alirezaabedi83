@@ -1,85 +1,6 @@
 #include "game.h"
-int game_menu() {
-    int choice;
-    int highlight = 0;
-    char *choices[] = {
-        "New Game",
-        "Continue Previous Game",
-        "Scoreboard",
-        "Settings",
-        "Profile",
-        "Back to Main Menu"
-    };
-    int n_choices = sizeof(choices) / sizeof(char *);
-
-    // initscr();
-    clear();
-    noecho();
-    cbreak();
-    curs_set(0);
-    keypad(stdscr, TRUE);
-
-    mvprintw(1, 1, "Game Menu:");
-    while (1) {
-        for (int i = 0; i < n_choices; ++i) {
-            if (i == highlight) {
-                attron(A_REVERSE);
-            }
-            mvprintw(3 + i, 1, "%s", choices[i]);
-            attroff(A_REVERSE);
-        }
-
-        choice = getch();
-
-        switch (choice) {
-            case KEY_UP:
-                highlight = (highlight - 1 + n_choices) % n_choices;
-                break;
-            case KEY_DOWN:
-                highlight = (highlight + 1) % n_choices;
-                break;
-            case 10:
-                if (strcmp(choices[highlight], "New Game") == 0) {
-                    mvprintw(10, 1, "Starting a new game...");
-                    refresh();
-                    getch();
-                    clear();
-                } else if (strcmp(choices[highlight], "Continue Previous Game") == 0) {
-                    mvprintw(10, 1, "Continuing previous game...");
-                    refresh();
-                    getch();
-                    clear();
-                } else if (strcmp(choices[highlight], "Scoreboard") == 0) {
-                    mvprintw(10, 1, "Showing scoreboard...");
-                    refresh();
-                    getch();
-                    clear();
-                } else if (strcmp(choices[highlight], "Settings") == 0) {
-                    mvprintw(10, 1, "Opening settings...");
-                    refresh();
-                    getch();
-                    clear();
-                } else if (strcmp(choices[highlight], "Profile") == 0) {
-                    mvprintw(10, 1, "Opening profile...");
-                    refresh();
-                    getch();
-                    clear();
-                } else if (strcmp(choices[highlight], "Back to Main Menu") == 0) {
-                    // first_menu();
-                    return 0;
-                }
-                break;
-            default:
-                break;
-        }
-
-        refresh();
-    }
-
-    // endwin();
-    clear();
-    return 1;
-}
+#include <ncurses.h>
+#include <string.h>
 
 int check_password(char pass[]) {
     if (strlen(pass) < 7 || pass == NULL) {
@@ -181,7 +102,6 @@ int sign_up() {
     char username[MAX_USERNAME_LEN], password[MAX_PASSWORD_LEN], email[MAX_EMAIL_LEN];
     char choice;
 
-    // initscr();
     clear();
     cbreak();
     noecho();
@@ -271,6 +191,7 @@ int sign_up() {
     }
 
     mvprintw(7, 1, "User successfully created. Press any key to continue.");
+    strcpy(user_name, username);
     refresh();
     getch();
     clear();
@@ -302,7 +223,6 @@ int login() {
     char username[MAX_USERNAME_LEN], password[MAX_PASSWORD_LEN], email[MAX_EMAIL_LEN];
     int choice;
 
-    // initscr();
     clear();
     cbreak();
     noecho();
@@ -349,6 +269,7 @@ int login() {
             refresh();
             getch();
             clear();
+            strcpy(user_name, username);
             return 1;
         } else {
             mvprintw(5, 1, "Invalid username or password. Press any key to try again.");
@@ -377,6 +298,7 @@ int login() {
             refresh();
             getch();
             clear();
+            strcpy(user_name, username);
             return 1;
         } else {
             mvprintw(5, 1, "Invalid email for this username. Press any key to try again.");
@@ -393,80 +315,6 @@ int login() {
         return 0;
     }
 }
-
-int first_menu() {
-    int choice;
-    int highlight = 0;
-    char *choices[] = {
-        "LogIn",
-        "SignUp",
-        "guest",
-        "Exit",
-    };
-    int n_choices = sizeof(choices) / sizeof(char *);
-
-    initscr();
-    clear();
-    noecho();
-    cbreak();
-    curs_set(0);
-    keypad(stdscr, TRUE);
-
-    mvprintw(1, 1, "WELCOME!");
-    while (1) {
-        for (int i = 0; i < n_choices; ++i) {
-            if (i == highlight) {
-                attron(A_REVERSE);
-            }
-            mvprintw(3 + i, 1, "%s", choices[i]);
-            attroff(A_REVERSE);
-        }
-
-        choice = getch();
-
-        switch (choice) {
-            case KEY_UP:
-                highlight = (highlight - 1 + n_choices) % n_choices;
-                break;
-            case KEY_DOWN:
-                highlight = (highlight + 1) % n_choices;
-                break;
-            case 10:
-                if (strcmp(choices[highlight], "LogIn") == 0) {
-                    clear();
-                    if(login()){return 1;}
-                    refresh();
-                    getch();
-                    clear();
-                } else if (strcmp(choices[highlight], "SignUp") == 0) {
-                    clear();
-                    if(sign_up()){return 1;}
-                    refresh();
-                    getch();
-                    clear();
-                } else if (strcmp(choices[highlight], "guest") == 0) {
-                    /*do later*/
-                    refresh();
-                    getch();
-                    clear();
-                } else if (strcmp(choices[highlight], "Exit") == 0) {
-                    clear();
-                    endwin();
-                    return 0;
-                }
-                break;
-            default:
-                break;
-        }
-
-        refresh();
-    }
-
-    clear();
-    return 1;
-}
-
-
 
 
 void close_menu(int number_items , MENU* menu , ITEM** items){
@@ -516,3 +364,151 @@ int main_menu(int number_items , char* choices[]){
     
     }
 }
+
+
+void settings_menu() {
+    int choice;
+    int difficulty = 1;  // 1: Easy, 2: Medium, 3: Hard
+    char *character_color = "Red";  // Default color
+    char *selected_song = "None";
+
+    char *difficulty_levels[] = {
+        "Easy",
+        "Medium",
+        "Hard"
+    };
+
+    char *colors[] = {
+        "Red",
+        "Blue",
+        "Green",
+        "Yellow"
+    };
+
+    char *songs[] = {
+        "Song 1",
+        "Song 2",
+        "Song 3"
+    };
+
+    char *settings_options[] = {
+        "Change Difficulty",
+        "Change Character Color",
+        "Select Background Music",
+        "Back to Main Menu"
+    };
+
+    while (1) {
+        clear();
+        mvprintw(1, 1, "Settings Menu:");
+        mvprintw(2, 1, "1. Change Difficulty (Current: %s)", difficulty_levels[difficulty - 1]);
+        mvprintw(3, 1, "2. Change Character Color (Current: %s)", character_color);
+        mvprintw(4, 1, "3. Select Background Music (Current: %s)", selected_song);
+        mvprintw(5, 1, "4. Back to Main Menu");
+
+        choice = getch() - '0';  // Get user input as integer
+
+        switch (choice) {
+            case 1: {  // Change Difficulty
+                int diff_choice;
+                clear();
+                mvprintw(1, 1, "Select Difficulty:");
+                mvprintw(2, 1, "1. Easy");
+                mvprintw(3, 1, "2. Medium");
+                mvprintw(4, 1, "3. Hard");
+                diff_choice = getch() - '0';  
+                if (diff_choice >= 1 && diff_choice <= 3) {
+                    difficulty = diff_choice;
+                    mvprintw(6, 1, "Difficulty set to: %s", difficulty_levels[difficulty - 1]);
+                } else {
+                    mvprintw(6, 1, "Invalid choice!");
+                }
+                getch();
+                break;
+            }
+            case 2: {  // Change Character Color
+                int color_choice;
+                clear();
+                mvprintw(1, 1, "Select Character Color:");
+                for (int i = 0; i < 4; i++) {
+                    mvprintw(i + 2, 1, "%d. %s", i + 1, colors[i]);
+                }
+                color_choice = getch() - '0';  
+                if (color_choice >= 1 && color_choice <= 4) {
+                    character_color = colors[color_choice - 1];
+                    mvprintw(7, 1, "Character color set to: %s", character_color);
+                } else {
+                    mvprintw(7, 1, "Invalid choice!");
+                }
+                getch();
+                break;
+            }
+            case 3: {  // Select Background Music
+                int song_choice;
+                clear();
+                mvprintw(1, 1, "Select Background Music:");
+                mvprintw(2, 1, "1. Song 1");
+                mvprintw(3, 1, "2. Song 2");
+                mvprintw(4, 1, "3. Song 3");
+                mvprintw(5, 1, "4. Stop Music");
+                song_choice = getch() - '0';  
+                switch (song_choice) {
+                    case 1:
+                        selected_song = "Song 1";
+                        play_music("music1.mp3");
+                        mvprintw(6, 1, "Music selected: %s", selected_song);
+                        break;
+                    case 2:
+                        selected_song = "Song 2";
+                        play_music("music2.mp3");
+                        mvprintw(6, 1, "Music selected: %s", selected_song);
+                        break;
+                    case 3:
+                        selected_song = "Song 3";
+                        play_music("music3.mp3");
+                        mvprintw(6, 1, "Music selected: %s", selected_song);
+                        break;
+                    case 4:
+                        selected_song = "None";
+                        stop_music();
+                        mvprintw(6, 1, "Music stopped.");
+                        break;
+                    default:
+                        mvprintw(7, 1, "Invalid choice!");
+                        break;
+                }
+                getch();
+                break;
+            }
+            case 4:  // Back to Main Menu
+            clear();
+                return;
+            default:
+                mvprintw(7, 1, "Invalid option!");
+                getch();
+                clear();
+                break;
+        }
+    }
+}
+
+void play_music(const char *file) {
+    if (Mix_PlayingMusic() == 1) {
+        Mix_HaltMusic();
+    }
+
+    current_music = Mix_LoadMUS(file);
+    if (current_music == NULL) {
+        mvprintw(10, 1, "Error loading music: %s", Mix_GetError());
+        getch();
+        return;
+    }
+
+    Mix_PlayMusic(current_music, -1);
+}
+
+void stop_music() {
+    if (Mix_PlayingMusic() == 1) {
+        Mix_HaltMusic();
+    }}
+

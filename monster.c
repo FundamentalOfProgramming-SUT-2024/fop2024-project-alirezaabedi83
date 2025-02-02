@@ -26,11 +26,11 @@ Monster* select_monster(int level){
         case 1:
         case 2:
         case 3:
-        monster= (rand() % 2) + 1;
+        monster= (rand() % 4) + 1;
             break;
         case 4:
         case 5:
-            monster= (rand()%2)+2;
+            monster= (rand()%4)+2;
             break;
         case 6:    
         monster=3;
@@ -39,15 +39,22 @@ Monster* select_monster(int level){
     }
 
     switch (monster) {
-        case 1://Spider
-            return create_monster('S',2,1,1,1,1);
+        case 1://deamon
+            return create_monster('D',5,1,1,1,2);
         break;
-        case 2://goblin
-            return create_monster('G',5,3,1,1,2);
+        case 2://fire
+            return create_monster('F',10,2,1,1,2);
 
         break;
-        case 3://troll
-            return create_monster('T',15,5,1,1,1);
+        case 3://giant
+            return create_monster('G',15,3,1,1,2);
+        break;
+        case 4://snake
+            return create_monster('S',20,1,1,1,2);
+        break;
+        case 5://undeed
+            return create_monster('U',30,2,1,1,2);
+
         break;
     
     }
@@ -79,6 +86,7 @@ int set_starting_pos(Monster* monster , Room* room){
 }
 
 int move_monster(Level* level){
+    
     int x;
     for (x=0; x<level->monsters_count; x++) {
         if (level->monsters[x]->is_alive == 0) {
@@ -178,30 +186,47 @@ void draw_monster(Monster* monster){
 
 }
 /*
-Spider
-    symbol:S
+Deamon
+    symbol:D
     level:1-3
-    health:2
+    health:5
     attack:1
     speed:1
     defence:1
     pathfinding:1
 
-Goblin
-    symbol:G
+Fire
+    symbol:F
     level:1-5
-    health:5
-    attack:3
+    health:10
+    attack:2
     speed:1
     defence:1
     pathfinding:2 seeking
-
-Troll
-    symbol:T
-    level:4-6
+Giant
+    symbol:G
+    level:1-5
     health:15
-    attack:5
+    attack:3
     speed:1
     defence:1
     pathfinding:1 random
+
+Snake
+    symbol:U
+    level:1-5
+    health:20
+    attack:2
+    speed:1
+    defence:1
+    pathfinding:1 random    
+Undeed
+    symbol:U
+    level:1-5
+    health:30
+    attack:3
+    speed:1
+    defence:1
+    pathfinding:1 random
+
 */

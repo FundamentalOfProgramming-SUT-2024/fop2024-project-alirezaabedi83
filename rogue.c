@@ -28,12 +28,32 @@ int game_loop(Game* game){
         else{
             new_pos=handle_input(choice,level->user);
             check_next(new_pos, level);
+            
             move_monster(level);
 
             render(game);
                     
             if (level->user->health <=0) {
                 game->curent_level=0;
+                clear();
+                const char *game_over[] = {
+                " GGG   AAAAA  M   M  EEEEE    OOO   V   V  EEEEE  RRRR  ",
+                "G   G  A   A  MM MM  E       O   O  V   V  E      R   R ",
+                "G      AAAAA  M M M  EEEE    O   O  V   V  EEEE   RRRR  ",
+                "G   G  A   A  M   M  E       O   O  V   V  E      R  R  ",
+                " GGG   A   A  M   M  EEEEE    OOO    VVV   EEEEE  R   R "
+                };
+
+                for(int i = 0; i < 5; i++) {
+                    mvprintw(25+i,70,"%s\n", game_over[i]);
+                }
+
+                refresh();
+                getch();
+                clear();
+                save_scoreboard(user_name, scoring);
+                endwin();
+                exit(0);
                 return -1;
             
             }

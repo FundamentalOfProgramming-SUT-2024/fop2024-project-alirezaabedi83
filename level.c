@@ -1,6 +1,5 @@
 #include "game.h"
-#include "utils.h"
-#include <ncurses.h>
+
 Level* level_setup(int level){
     Level* new_level=(Level*)malloc(sizeof(Level));
 
@@ -46,7 +45,7 @@ Room** room_setup() {
 
     for(i=0;i<room_count;i++){
         rooms[i]=generate_random_room(max_height,max_width, i,4);
-        draw_room(rooms[i]);
+        draw_room(rooms[i] , i);
     }
 
     // path_find(&rooms[0]->door[3]->position, &rooms[1]->door[1]->position);
@@ -56,40 +55,50 @@ Room** room_setup() {
     return rooms;
 }
 
-void create_hallway(Level* level){
-    int i,j;
-    int random_room,random_door, count;
-    for (i=0; i<level->rooms_count; i++) {
+// void create_hallway(Level* level){
+//     int i,j;
+//     int random_room,random_door, count;
+//     for (i=0; i<level->rooms_count; i++) {
 
-        for (j=0; j<level->rooms[i]->door_count; j++) {
-            if (level->rooms[i]->door[j]->is_connected == 1) {
-                continue;
-            }
+//         for (j=0; j<level->rooms[i]->door_count; j++) {
+//             if (level->rooms[i]->door[j]->is_connected == 1) {
+//                 continue;
+//             }
 
-            count=0;
+//             count=0;
 
-            while (count<2) {
+//             while (count<2) {
             
             
-                random_room=rand() % level->rooms_count;
-                random_door=rand() % level->rooms[random_room]->door_count;
+//                 random_room=rand() % level->rooms_count;
+//                 random_door=rand() % level->rooms[random_room]->door_count;
 
-                if (level->rooms[random_room]->door[random_door]->is_connected == 1 || random_room==i) {
-                    count++;
-                    continue;
+//                 if (level->rooms[random_room]->door[random_door]->is_connected == 1 || random_room==i) {
+//                     count++;
+//                     continue;
                 
-                }
+//                 }
 
-                path_find(&level->rooms[random_room]->door[random_door]->position, &level->rooms[i]->door[j]->position);
+//                 path_find(&level->rooms[random_room]->door[random_door]->position, &level->rooms[i]->door[j]->position);
 
-                level->rooms[random_room]->door[random_door]->is_connected = 1;
-                level->rooms[i]->door[j]->is_connected = 1;
-                break;
-            }
+//                 level->rooms[random_room]->door[random_door]->is_connected = 1;
+//                 level->rooms[i]->door[j]->is_connected = 1;
+//                 break;
+//             }
         
-        }
+//         }
     
-    }
+//     }
+// }
+
+void create_hallway(Level* level){
+    path_find(&level->rooms[1]->door[1]->position, &level->rooms[0]->door[3]->position);
+    path_find(&level->rooms[2]->door[1]->position, &level->rooms[1]->door[3]->position);
+    path_find(&level->rooms[3]->door[0]->position, &level->rooms[0]->door[2]->position);
+    path_find(&level->rooms[4]->door[1]->position, &level->rooms[3]->door[3]->position);
+    path_find(&level->rooms[5]->door[1]->position, &level->rooms[4]->door[3]->position);
+    path_find(&level->rooms[2]->door[2]->position, &level->rooms[5]->door[0]->position);
+
 }
 
 char** save_level(){
