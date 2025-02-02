@@ -42,6 +42,9 @@ void menu_loop(){
                                 getch();
                                 clear();
                                 game.curent_level=0;
+                                score=0;
+                                gold=0;
+                                health=100;
                                 game_loop(&game);
                                 break;
                             case 1:
@@ -59,6 +62,10 @@ void menu_loop(){
                             settings_menu();
                             break;
                             case 4:
+                                clear();
+                                mvprintw(2, 2, "your username is %s and you achived %d golds.",user_name,gold);
+                                getch();
+                                clear();
                             break;
                             case 5:
                             break;
@@ -87,6 +94,9 @@ void menu_loop(){
                                 getch();
                                 clear();
                                 game.curent_level=0;
+                                score=0;
+                                gold=0;
+                                health=100;
                                 game_loop(&game);
                                 break;
                             case 1:
@@ -104,6 +114,10 @@ void menu_loop(){
                             settings_menu();
                             break;
                             case 4:
+                                clear();
+                                mvprintw(2, 2, "your username is %s and you achived %d golds.",user_name,gold);
+                                getch();
+                                clear();
                             break;
                             case 5:
                             break;
@@ -119,7 +133,7 @@ void menu_loop(){
                 game_loop(&game);  
                 break;  
             case 3:
-                save_scoreboard(user_name, scoring) ;
+                save_scoreboard(user_name, score,gold) ;
                 getch();
                 return;
                 break;
@@ -130,8 +144,9 @@ void menu_loop(){
 }
 
 Mix_Music *current_music = NULL;
-
-int scoring=0;
+int score=0;
+int gold=0;
+int health=100;
 char user_name[50]="guest";
 int current_floor=1;
 int main(){

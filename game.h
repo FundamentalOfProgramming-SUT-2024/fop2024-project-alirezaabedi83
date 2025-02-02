@@ -11,8 +11,12 @@
 #include <locale.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <unistd.h>
+#include <pthread.h>
 
-extern int scoring;
+extern int gold;
+extern int score;
+extern int health;
 extern char user_name[50];
 extern int current_floor;
 
@@ -69,15 +73,15 @@ typedef struct Monster{
     
 } Monster;
 
-typedef enum{SWORD_TYPE,SPEAR_TYPE} WeaponType;
+// typedef enum{SWORD_TYPE,SPEAR_TYPE} WeaponType;
 
 typedef struct Weapon{
-    WeaponType type;
+    // WeaponType type;
     int attack;
     int health;
 
 }Weapon;
-typedef enum {WEAPON_TYPE, POTION}ItemType;
+typedef enum {WEAPON_TYPE, POTION_TYPE}ItemType;
 typedef struct Item{
     ItemType type;
     Position* position;
@@ -107,10 +111,7 @@ typedef struct Door{
 } Door;
 
 typedef struct Player{
-    char* username;
     Position *position;
-    int score;
-    int health;
     int attack;
     Room*room;
     int max_health;
@@ -122,6 +123,7 @@ typedef struct Player{
 typedef struct {
     char username[50];
     int score;
+    int gold;
 } ScoreBoard;
 
 
@@ -138,6 +140,8 @@ void create_hallway(Level* level);
 char** save_level();
 Level* level_setup(int level);
 
+
+int can_move(Position* monster_pos, Position* user_pos, char **level_map) ;
 int add_monster(Level* level);
 Monster* select_monster(int level);
 Monster* create_monster(char symbol,int health,int attack,int speed,int defence,int pathfinding);
@@ -155,12 +159,17 @@ void draw_player(Player*player);
 void draw_level(Level* level);
 int game_loop(Game* game);
 
+Item* create_mace(int attack, int health);
+Item* create_arrow(int attack, int health);
+Item* create_wand(int attack, int health);
+Item* create_dagger(int attack, int health);
 Item* create_sword(int attack, int health);
 void print_inventory(Player*player);
+void* reset_attack(void* arg) ;
+void delete_item(Player *player, char *item_name);
 
 
 //menu functions
-enum{START_GAME, QUIT_GAME};
 
 int game_menu();
 int main_menu(int number_items , char* choices[]);
@@ -175,7 +184,7 @@ int check_email_for_username(char username[], char email[]);
 int login();
 int first_menu();
 
-void save_scoreboard(char username[], int score) ;
+void save_scoreboard(char username[], int score , int gold) ;
 int compare_scores(const void *a, const void *b) ;
 void display_scoreboard(const char* logged_in_user);
 void settings_menu() ;

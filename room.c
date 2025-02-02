@@ -65,6 +65,12 @@ Room *generate_random_room(int max_height, int max_width , int grid, int door_co
 }
 
 int draw_room(Room* room , int num_of_room) {
+    start_color();
+    init_pair(1, COLOR_YELLOW, COLOR_BLACK);
+
+    if (num_of_room==3 && current_floor==4) {
+        attron(COLOR_PAIR(1));
+    }
     for (int i = 0; i < room->length; i++) {
         for (int j = 0; j < room->width; j++) {
             if (i == 0 || i == room->length - 1) {
@@ -76,11 +82,15 @@ int draw_room(Room* room , int num_of_room) {
             }
         }
     }
-
+    attroff(COLOR_PAIR(1));
     mvaddch(room->position.y + rand()%(room->length-1)+1,room->position.x + rand()%(room->width-1)+1, 'o');
-
+    //treasure room
     if (num_of_room==3) {
         if (current_floor==4) {
+            for (int z=0; z<rand()%4 +2; z++) {
+                mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '^');
+            
+            }
             mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '*');
         }
         else{
@@ -88,6 +98,24 @@ int draw_room(Room* room , int num_of_room) {
         }
     
     }
+    //potion room
+    if (num_of_room==6) {
+        mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'X');
+        if (rand()%2==1) {
+            mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'X');
+        }
+
+        if (rand()%3==1) {
+            mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'P');
+        }
+
+        if (rand()%2==1) {
+            mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'Z');
+        }
+
+    }
+
+
 
     if ((rand()%2)==1) {
          mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '^');
@@ -98,7 +126,33 @@ int draw_room(Room* room , int num_of_room) {
          mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '$');
     
     }
-    // int door_count= sizeof(room->door)/sizeof(Position*);
+
+    if ((rand()%3)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '@');
+    
+    }
+
+    if ((rand()%3)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'A');
+    
+    }
+
+    if ((rand()%3)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'W');
+    
+    }
+
+    if ((rand()%3)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'E');
+    
+    }
+
+    if ((rand()%3)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'R');
+    
+    }
+
+
     for (int i=0; i<4; i++) {
         mvprintw(room->door[i]->position.y, room->door[i]->position.x,"+");  
     }

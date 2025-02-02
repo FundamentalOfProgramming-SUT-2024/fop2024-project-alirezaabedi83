@@ -1,4 +1,6 @@
 #include "game.h"
+#include <ncurses.h>
+#include <string.h>
 
 void render(Game* game){
     clear();
@@ -24,6 +26,40 @@ int game_loop(Game* game){
         }
         if (choice=='i') {
             print_inventory(level->user);
+            mvprintw(0, 0, "wich one do you want to use?");
+            char str[10];
+            getstr(str);
+            int apply_time=0;
+            if (strcmp(str, "sword")==0) {
+                delete_item(level->user, "sword");
+                level->user->attack=10;
+                apply_time=0;
+            }
+            else if (strcmp(str, "dagger")==0) {
+                delete_item(level->user, "dagger");
+                level->user->attack=12;
+                apply_time=1;
+            }
+            else if (strcmp(str, "arrow")==0) {
+                delete_item(level->user, "arrow");
+                level->user->attack=6;
+                apply_time=1;
+            }
+            else if (strcmp(str, "wand")==0) {
+                delete_item(level->user, "wand");
+                level->user->attack=15;
+                apply_time=1;
+            }
+            else {
+                level->user->attack=5;
+            }
+            if (apply_time==1) {
+                pthread_t reset_thread;
+                pthread_create(&reset_thread, NULL, reset_attack, (void*)level->user);
+                pthread_detach(reset_thread);
+            }
+            
+
         }
         else{
             new_pos=handle_input(choice,level->user);
@@ -33,7 +69,7 @@ int game_loop(Game* game){
 
             render(game);
                     
-            if (level->user->health <=0) {
+            if (health <=0) {
                 game->curent_level=0;
                 clear();
                 const char *game_over[] = {
@@ -51,7 +87,7 @@ int game_loop(Game* game){
                 refresh();
                 getch();
                 clear();
-                save_scoreboard(user_name, scoring);
+                save_scoreboard(user_name, score , gold);
                 endwin();
                 exit(0);
                 return -1;

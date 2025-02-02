@@ -6,19 +6,15 @@ Player*player_setup(){
     Player *new_player;
     new_player=(Player*)malloc(sizeof(Player));
     new_player->position=(Position*)malloc(sizeof(Position));
-    new_player->username=(char*)malloc(sizeof(char)*50);
-
     new_player->items=(Item**)malloc(sizeof(Item*));
 
-    new_player->health=100;
-    new_player->score=0;
-    new_player->attack=1;
+    new_player->attack=5;
     new_player->exprience=0;
     new_player->item_count=0;
     new_player->max_health=100;
     // scoring=0;
 
-    new_player->items[new_player->item_count]=create_sword(2,4);
+    new_player->items[new_player->item_count]=create_mace(5,4);
     new_player->item_count++;
 
     
@@ -87,28 +83,92 @@ int check_next(Position* new_pos,Level* level){
         case 'G':
         case 'S':
         case 'F':
+        case 'U':
 
             combat(user, get_monster(new_pos, level->monsters),1);
             break;
         case '^':
-            user->health--; 
+            health--; 
             move_player(new_pos,user,level->tiles);
             break;
 
         case '$':{
             int random_score=rand()%5 + 1;
-            scoring+=random_score ; 
+            gold+=random_score ; 
+            score+=random_score;
             level->tiles[new_pos->y][new_pos->x]='.';
             move_player(new_pos,user,level->tiles);
             mvprintw(0, 0, "you get %d gold.",random_score);
             getch();
             break;    
         }
+        
+        case 'Z':
+        break;
+
+        case 'X':
+        break;
+
+        case 'P':
+            
+        break;
+
+        case 'A':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->items[user->item_count]=create_arrow(5,20); 
+                user->item_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);         
+            }
+        break;
+        case 'W':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->items[user->item_count]=create_wand(15,8);
+                user->item_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);
+            }
+        break;
+        case 'R':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->items[user->item_count]=create_sword(10,20);
+                user->item_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);
+            }
+        break;
+        case 'E':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->items[user->item_count]=create_dagger(12,10);
+                user->item_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);
+            }
+        break;
+        //black gold
+        case '@':{
+            int random_score=rand()%5 + 5;
+            gold+=random_score ; 
+            score+=random_score;
+            level->tiles[new_pos->y][new_pos->x]='.';
+            move_player(new_pos,user,level->tiles);
+            mvprintw(0, 0, "you eat black gold and get %d gold.",random_score);
+            getch();
+            break;    
+        }
+
+
         case '>':{
+            score+=3;
             current_floor++;
             Game game;
             game.curent_level=0;
             clear();
+
             game_loop(&game);
         break;
         }
@@ -125,9 +185,12 @@ int check_next(Position* new_pos,Level* level){
             for (int i = 0; i < 5; ++i) {
                 mvprintw(23+i, 70, "%s\n", you_win[i]);
             }
-            mvprintw(30, 70, "Y O U G O T %d S C O R E .",scoring);
+            score+=10;
+            gold+=10;
+            mvprintw(30, 70, "Y O U G O T %d S C O R E .",score);
             getch();
-            save_scoreboard(user_name, scoring);
+            
+            save_scoreboard(user_name, score , gold);
             endwin();
             exit(0);
             

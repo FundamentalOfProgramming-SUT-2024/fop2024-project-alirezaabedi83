@@ -94,7 +94,7 @@ Room** room_setup() {
 void create_hallway(Level* level){
     path_find(&level->rooms[1]->door[1]->position, &level->rooms[0]->door[3]->position);
     path_find(&level->rooms[2]->door[1]->position, &level->rooms[1]->door[3]->position);
-    path_find(&level->rooms[3]->door[0]->position, &level->rooms[0]->door[2]->position);
+    // path_find(&level->rooms[3]->door[0]->position, &level->rooms[0]->door[2]->position);
     path_find(&level->rooms[4]->door[1]->position, &level->rooms[3]->door[3]->position);
     path_find(&level->rooms[5]->door[1]->position, &level->rooms[4]->door[3]->position);
     path_find(&level->rooms[2]->door[2]->position, &level->rooms[5]->door[0]->position);

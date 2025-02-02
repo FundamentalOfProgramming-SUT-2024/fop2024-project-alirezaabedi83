@@ -26,7 +26,7 @@ Monster* select_monster(int level){
         case 1:
         case 2:
         case 3:
-        monster= (rand() % 4) + 1;
+        monster= (rand() % 5) + 1;
             break;
         case 4:
         case 5:
@@ -87,20 +87,24 @@ int set_starting_pos(Monster* monster , Room* room){
 
 int move_monster(Level* level){
     
+    
+    
     int x;
     for (x=0; x<level->monsters_count; x++) {
+         
+
         if (level->monsters[x]->is_alive == 0) {
             continue;
         
         }
-
-        if (level->monsters[x]->pathfinding==1) {
-            random_move(level->monsters[x]->position);
+        if (can_move(level->monsters[x]->position, level->user->position, level->tiles)) {
+            if (level->monsters[x]->pathfinding==1) {
+                random_move(level->monsters[x]->position);
+            }
+            else {
+                seek_move(level->monsters[x]->position , level->user->position);
+            }
         }
-        else {
-            seek_move(level->monsters[x]->position , level->user->position);
-        }
-  
     }
 
 
@@ -184,6 +188,25 @@ void draw_monster(Monster* monster){
     mvprintw(monster->position->y, monster->position->x, "%s", monster->string);
     }
 
+}
+
+int can_move(Position* monster_pos, Position* user_pos, char **level_map) {
+   
+        int start_x = (monster_pos->x < user_pos->x) ? monster_pos->x : user_pos->x;
+        int end_x = (monster_pos->x > user_pos->x) ? monster_pos->x : user_pos->x;
+        int start_y = (monster_pos->y < user_pos->y) ? monster_pos->y : user_pos->y;
+        int end_y = (monster_pos->y > user_pos->y) ? monster_pos->y : user_pos->y;
+
+        for (int y = start_y ; y <= end_y; y++) {
+            for (int x = start_x; x <= end_x; x++) {
+                if (level_map[y][x] == '|' || level_map[y][x] == '_' ||  level_map[y][x] == '+') {
+                    return 0; 
+                }
+        }
+        }
+    
+    
+    return 1;
 }
 /*
 Deamon

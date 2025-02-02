@@ -11,8 +11,10 @@ void screen_setup(){
 
 int print_game_info(Level* level){
     mvprintw(55, 0, "    Level: %d",level->level);
-    printw("    SCORE: %d",scoring);
-    printw("    HEALTH: %d(%d)",level->user->health,level->user->max_health);
+    printw("    GOLD : %d",gold);
+    printw("    SCORE : %d",score);
+
+    printw("    HEALTH: %d(%d)",health,level->user->max_health);
     printw("    ATTACK: %d",level->user->attack);
     printw("    EXPRIENCE: %d\t",level->user->exprience);
     return 1;
@@ -22,7 +24,7 @@ int print_game_info(Level* level){
 void print_inventory(Player*player){
         mvprintw(54, 0, "    Inventory: ");
         for (int i=0; i<player->item_count; i++) {
-            printw("%s", player->items[i]->string);
+            printw("%s ", player->items[i]->string);
         
         }
 
@@ -30,12 +32,12 @@ void print_inventory(Player*player){
 
 }
 
-void save_scoreboard(char username[], int score) {
+void save_scoreboard(char username[], int score , int gold) {
     FILE *file = fopen("scoreboard.txt", "a");
     if (file == NULL) {
         return;
     }
-    fprintf(file, "%s %d\n", username, score);
+    fprintf(file, "%s %d %d\n", username, score, gold);
     fclose(file);
 }
 
@@ -57,7 +59,7 @@ void display_scoreboard(const char* logged_in_user) {
         return;
     }
 
-    while (fscanf(file, "%s %d", scores[count].username, &scores[count].score) != EOF) {
+    while (fscanf(file, "%s %d %d", scores[count].username, &scores[count].score , &scores[count].gold) != EOF) {
         count++;
     }
     fclose(file);
@@ -86,30 +88,30 @@ void display_scoreboard(const char* logged_in_user) {
             if (idx == 0) {
                 attron(COLOR_PAIR(1));
                 attron(A_BOLD);
-                mvprintw(i + 3, 1, "%d. 🏆 %s (Goat) -> %d", idx + 1, scores[idx].username, scores[idx].score);
+                mvprintw(i + 3, 1, "%d. 🏆 %s (Goat) -> %d the gold %d", idx + 1, scores[idx].username, scores[idx].score , scores[idx].gold);
                 attroff(A_BOLD);
                 attroff(COLOR_PAIR(1));
             } else if (idx == 1) {
                 attron(COLOR_PAIR(2));
                 attron(A_BOLD);
-                mvprintw(i + 3, 1, "%d. 🥈 %s (Legend) -> %d", idx + 1, scores[idx].username, scores[idx].score);
+                mvprintw(i + 3, 1, "%d. 🥈 %s (Legend) -> %d the gold %d", idx + 1, scores[idx].username, scores[idx].score ,scores[idx].gold);
                 attroff(A_BOLD);
                 attroff(COLOR_PAIR(2));
             } else if (idx == 2) {
                 attron(COLOR_PAIR(3));
                 attron(A_BOLD);
-                mvprintw(i + 3, 1, "%d. 🥉 %s (Master) -> %d", idx + 1, scores[idx].username, scores[idx].score);
+                mvprintw(i + 3, 1, "%d. 🥉 %s (Master) -> %d the gold %d", idx + 1, scores[idx].username, scores[idx].score,scores[idx].gold);
                 attroff(A_BOLD);
                 attroff(COLOR_PAIR(3));
             } else {
                 attron(COLOR_PAIR(4));
-                mvprintw(i + 3, 1, "%d. %s - %d", idx + 1, scores[idx].username, scores[idx].score);
+                mvprintw(i + 3, 1, "%d. %s - %d the gold %d", idx + 1, scores[idx].username, scores[idx].score ,scores[idx].gold);
                 attroff(COLOR_PAIR(4));
             }
 
             if (strcmp(scores[idx].username, logged_in_user) == 0) {
                 attron(A_BOLD);
-                mvprintw(i + 3, 1, "%d. %s -> %d", idx + 1, scores[idx].username, scores[idx].score);
+                mvprintw(i + 3, 1, "%d. %s -> %d the gold %d", idx + 1, scores[idx].username, scores[idx].score,scores[idx].gold);
                 attroff(A_BOLD);
             }
         }

@@ -419,6 +419,13 @@ void settings_menu() {
                 diff_choice = getch() - '0';  
                 if (diff_choice >= 1 && diff_choice <= 3) {
                     difficulty = diff_choice;
+                    if (difficulty==1) {
+                        health=100;
+                    }else if (difficulty==2) {
+                        health=70;
+                    }else {
+                        health=50;
+                    }
                     mvprintw(6, 1, "Difficulty set to: %s", difficulty_levels[difficulty - 1]);
                 } else {
                     mvprintw(6, 1, "Invalid choice!");

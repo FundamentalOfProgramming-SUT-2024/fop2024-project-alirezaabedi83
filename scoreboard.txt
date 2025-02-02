@@ -1,63 +1,17 @@
-alireee 0
-abas 0
-akbar 4
-reza 3
-pld 8
-dd 6
-vdt 7
-asdg 2
-aaaa 9
-yy 5
-hh 0
-theth 0
-c 0
-f 0
-alireee 0
-alireee 0
-alireee 0
-alfkf 0
-alireee 0
-alireza 0
-alio 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 0
-guest 4
-guest 5
-guest 4
-guest 6
-guest 23
-ald 0
-guest 8
-guest 10
-guest 1
-guest 0
-guest 2
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 13
-guest 9
-guest 19
+guest 7 5
+gt 0 0
+guest 4 4
+guest 0 0
+guest 5 5
+guest 7 5
+guest 87 79
+guest 0 0
+guest 0 0
+guest 0 0
+guest 9 9
+guest 2 2
+guest 6 4
+guest 83 62
+guest 7 5
+guest 5 3
+alireee 75 54
