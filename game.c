@@ -149,6 +149,7 @@ int gold=0;
 int health=100;
 char user_name[50]="guest";
 int current_floor=1;
+int color=0;
 int main(){
     setlocale(LC_ALL, "");
       

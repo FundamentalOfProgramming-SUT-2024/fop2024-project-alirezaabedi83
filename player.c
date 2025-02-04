@@ -8,11 +8,13 @@ Player*player_setup(){
     new_player->position=(Position*)malloc(sizeof(Position));
     new_player->weapon_items=(Item**)malloc(sizeof(Item*));
     new_player->potion_items=(Item**)malloc(sizeof(Item*));
+    new_player->food_items=(Item**)malloc(sizeof(Item*));
 
     new_player->attack=5;
     new_player->exprience=0;
     new_player->weapon_count=0;
     new_player->potion_count=0;
+    new_player->food_count=0;
 
     new_player->max_health=100;
     // scoring=0;
@@ -137,6 +139,39 @@ int check_next(Position* new_pos,Level* level){
             
         break;
 
+        case '?':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->food_items[user->food_count]=create_normal_food(20); 
+                user->food_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);         
+            }
+            
+        break;
+
+        case '%':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->food_items[user->food_count]=create_aala_food(20); 
+                user->food_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);         
+            }
+            
+        break;
+
+        case '!':
+            mvprintw(0, 0,"do you want it?(y/n)");
+            if (getch()=='y') {
+                user->food_items[user->food_count]=create_magic_food(20); 
+                user->food_count++;
+                level->tiles[new_pos->y][new_pos->x]='.';
+                move_player(new_pos,user,level->tiles);         
+            }
+            
+        break;
+
         case 'A':
             mvprintw(0, 0,"do you want it?(y/n)");
             if (getch()=='y') {
@@ -237,7 +272,24 @@ int move_player(Position* new_pos,Player*user , char** level){
 }
 
 void draw_player(Player*player){
+    start_color();
+    init_pair(1, COLOR_YELLOW, COLOR_BLACK);  
+    init_pair(2, COLOR_CYAN, COLOR_BLACK);    
+    init_pair(3, COLOR_GREEN, COLOR_BLACK);  
+
+    if (color==1) {
+        attron(COLOR_PAIR(1));
+    }
+    if (color==2) {
+        attron(COLOR_PAIR(2));
+    }
+    if (color==3) {
+        attron(COLOR_PAIR(3));
+    }
     mvprintw(player->position->y, player->position->x, "&");
     move(player->position->y, player->position->x);
+    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(2));
+    attroff(COLOR_PAIR(3));
 
 }

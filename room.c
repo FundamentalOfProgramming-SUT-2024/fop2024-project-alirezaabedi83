@@ -127,7 +127,7 @@ int draw_room(Room* room , int num_of_room) {
     
     }
 
-    if ((rand()%3)==1) {
+    if ((rand()%4)==1) {
          mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '@');
     
     }
@@ -149,6 +149,21 @@ int draw_room(Room* room , int num_of_room) {
 
     if ((rand()%3)==1) {
          mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, 'R');
+    
+    }
+
+    if ((rand()%3)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '?');
+    
+    }
+
+    if ((rand()%3)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '%');
+    
+    }
+
+    if ((rand()%3)==1) {
+         mvaddch(room->position.y + rand()%(room->length-2)+1,room->position.x + rand()%(room->width-2)+1, '!');
     
     }
 

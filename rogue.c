@@ -1,4 +1,5 @@
 #include "game.h"
+#include <stdlib.h>
 
 void render(Game* game){
     clear();
@@ -98,6 +99,37 @@ int game_loop(Game* game){
             
             
 
+        }
+
+        if (choice=='f') {
+            print_food(level->user);
+            mvprintw(0, 0, "wich one do you want to use?");
+            char str[10];
+            getstr(str);
+            if (strcmp(str, "normal")==0) {
+                delete_food(level->user, "normal");
+                if (rand()%2==0) {
+                    //good
+                    health+=5;
+                    //fassed
+                }else {
+                    health-=5;
+                }
+                
+            }
+            else if (strcmp(str, "magic")==0) {
+                delete_potion(level->user, "magic");
+                level->user->attack+=2;
+                health+=3;
+            }
+            else if (strcmp(str, "aala")==0) {
+                delete_potion(level->user, "aala");
+                level->user->attack+=3;
+            }
+            else {
+                
+            }
+                
         }
 
 

@@ -19,7 +19,7 @@ extern int score;
 extern int health;
 extern char user_name[50];
 extern int current_floor;
-
+extern int color;
 extern Mix_Music *current_music;
 
 #define MAX_USERNAME_LEN 50
@@ -83,7 +83,13 @@ typedef struct Potion{
 
 }Potion;
 
-typedef enum {WEAPON_TYPE, POTION_TYPE}ItemType;
+typedef struct Food{
+    int health;
+    int count;
+}Food;
+
+
+typedef enum {WEAPON_TYPE, POTION_TYPE, FOOD_TYPE}ItemType;
 typedef struct Item{
     ItemType type;
     Position* position;
@@ -91,6 +97,7 @@ typedef struct Item{
     union {
         Weapon * weapon;
         Potion* potion;
+        Food* food;
     } item;
 
     char string[256];
@@ -122,6 +129,8 @@ typedef struct Player{
     int weapon_count;
     Item** potion_items;
     int potion_count;
+    Item** food_items;
+    int food_count;
 
 } Player;
 
@@ -178,7 +187,11 @@ Item* create_health_potion( int health);
 Item* create_attack_potion( int health);
 Item* create_speed_potion(int health);
 void print_potion(Player*player);
-
+void print_food(Player*player);
+void delete_food(Player *player, char *item_name);
+Item* create_normal_food(int health);
+Item* create_magic_food(int health);
+Item* create_aala_food(int health);
 
 //menu functions
 

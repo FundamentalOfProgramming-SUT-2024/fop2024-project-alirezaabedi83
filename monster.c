@@ -10,6 +10,12 @@ int add_monster(Level *level){
             set_starting_pos(level->monsters[level->monsters_count] , level->rooms[x]);
             level->monsters_count= level->monsters_count +1;
         }
+
+        if ((rand() % 2 ) == 0) {
+            level->monsters[level->monsters_count]=select_monster(level->level);
+            set_starting_pos(level->monsters[level->monsters_count] , level->rooms[x]);
+            level->monsters_count= level->monsters_count +1;
+        }
     
     }
 

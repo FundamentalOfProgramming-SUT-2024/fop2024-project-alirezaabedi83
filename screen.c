@@ -1,4 +1,5 @@
 #include "game.h"
+#include <stdio.h>
 void screen_setup(){
     // int MAX_WIDTH=188;
     // int MAX_HEIGHT=56;
@@ -34,6 +35,15 @@ void print_potion(Player*player){
         mvprintw(54, 0, "    Potions: ");
         for (int i=0; i<player->potion_count; i++) {
             printw("%s ", player->potion_items[i]->string);
+        
+        }
+
+}
+
+void print_food(Player*player){
+        mvprintw(54, 0, "    FOODS: ");
+        for (int i=0; i<player->food_count; i++) {
+            printw("%s ", player->food_items[i]->string);
         
         }
 

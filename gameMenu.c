@@ -442,6 +442,8 @@ void settings_menu() {
                 }
                 color_choice = getch() - '0';  
                 if (color_choice >= 1 && color_choice <= 4) {
+                    color=color_choice;
+
                     character_color = colors[color_choice - 1];
                     mvprintw(7, 1, "Character color set to: %s", character_color);
                 } else {

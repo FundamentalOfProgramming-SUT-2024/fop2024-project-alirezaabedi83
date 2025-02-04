@@ -35,7 +35,7 @@ void draw_level(Level* level){
 
 }
 
-Room** room_setup() {
+Room** room_setup(){
     int i;
     Room**rooms=(Room**)malloc(sizeof(Room)*MAX_ROOMS);
     int max_height, max_width;

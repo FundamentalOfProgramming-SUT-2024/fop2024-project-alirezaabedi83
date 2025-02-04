@@ -127,6 +127,22 @@ void delete_potion(Player *player, char *item_name) {
 
 }
 
+void delete_food(Player *player, char *item_name) {
+    for (int i = 0; i < player->food_count; i++) {
+        if (strcmp(player->food_items[i]->string, item_name) == 0) {
+            free(player->food_items[i]);
+
+            for (int j = i; j < player->food_count - 1; j++) {
+                player->food_items[j] = player->food_items[j + 1];
+            }
+
+            player->food_count--;
+
+        }
+    }
+
+}
+
 Item* create_health_potion(int health){
     Item* item=(Item*)malloc(sizeof(Item));
     item->type=POTION_TYPE;
@@ -152,6 +168,49 @@ Item* create_attack_potion(int health){
     potion->health=health;
 
     item->item.potion=potion;
+    return item;
+}
+
+Item* create_normal_food(int health){
+    Item* item=(Item*)malloc(sizeof(Item));
+    item->type=FOOD_TYPE;
+
+    strcpy(item->string, "normal");
+
+    Food* food=malloc(sizeof(Food));
+
+    food->health=health;
+
+    item->item.food=food;
+    return item;
+}
+
+
+Item* create_magic_food(int health){
+    Item* item=(Item*)malloc(sizeof(Item));
+    item->type=FOOD_TYPE;
+
+    strcpy(item->string, "magic");
+
+    Food* food=malloc(sizeof(Food));
+
+    food->health=health;
+
+    item->item.food=food;
+    return item;
+}
+
+Item* create_aala_food(int health){
+    Item* item=(Item*)malloc(sizeof(Item));
+    item->type=FOOD_TYPE;
+
+    strcpy(item->string, "aala");
+
+    Food* food=malloc(sizeof(Food));
+
+    food->health=health;
+
+    item->item.food=food;
     return item;
 }
 
@@ -187,5 +246,12 @@ E -> dagger
 X -> health
 Z-> attack
 P -> speed
+
+*/
+
+/*FOOD
+? -> normal
+!-> magic
+% -> aala
 
 */
